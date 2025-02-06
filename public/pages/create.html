@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Create Character</title>
+  </head>
+  <body>
+      <h1>Create Character</h1>
+      <form id="characterForm">
+          <label for="fullname">Full Name:</label>
+          <input type="text" id="fullname" name="fullname" required><br>
+
+          <label for="birthday">Birthday:</label>
+          <input type="date" id="birthday" name="birthday" required><br>
+
+          <label for="employment">Employment:</label>
+          <input type="text" id="employment" name="employment" required><br>
+
+          <label for="gender">Gender:</label>
+          <input type="text" id="gender" name="gender" required><br>
+
+          <label for="networth">Net Worth:</label>
+          <input type="text" id="networth" name="networth" required><br>
+
+          <label for="game">Game:</label>
+          <input type="text" id="game" name="game" required><br>
+
+          <label for="playedby">Played By:</label>
+          <input type="text" id="playedby" name="playedby" required><br>
+
+          <label for="weight">Weight:</label>
+          <input type="number" id="weight" name="weight" required><br>
+
+          <label for="height">Height:</label>
+          <input type="text" id="height" name="height" required><br>
+
+          <label for="eye">Eye Color:</label>
+          <input type="text" id="eye" name="eye" required><br>
+
+          <label for="hair">Hair Color:</label>
+          <input type="text" id="hair" name="hair" required><br>
+
+          <label for="dead">Dead:</label>
+          <input type="checkbox" id="dead" name="dead"><br>
+
+          <label for="dateofdeath">Date of Death:</label>
+          <input type="date" id="dateofdeath" name="dateofdeath"><br>
+
+          <label for="alias">Alias:</label>
+          <input type="text" id="alias" name="alias"><br>
+
+          <button type="submit">Create Character</button>
+      </form>
+
+      <script>
+          document.getElementById('characterForm').addEventListener('submit', async function(e) {
+              e.preventDefault();
+
+              const characterData = {
+                  fullname: document.getElementById('fullname').value,
+                  birthday: document.getElementById('birthday').value,
+                  employment: document.getElementById('employment').value,
+                  gender: document.getElementById('gender').value,
+                  networth: document.getElementById('networth').value,
+                  game: document.getElementById('game').value,
+                  playedby: document.getElementById('playedby').value,
+                  weight: document.getElementById('weight').value,
+                  height: document.getElementById('height').value,
+                  eye: document.getElementById('eye').value,
+                  hair: document.getElementById('hair').value,
+                  dead: document.getElementById('dead').checked,
+                  dateofdeath: document.getElementById('dateofdeath').value,
+                  alias: document.getElementById('alias').value
+              };
+
+              try {
+                  const response = await fetch('/save-character', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(characterData)
+                  });
+
+                  if (response.ok) {
+                      alert('Character created successfully!');
+                  } else {
+                      alert('Failed to create character.');
+                  }
+              } catch (error) {
+                  alert('Error: ' + error.message);
+              }
+          });
+      </script>
+  </body>
+</html>

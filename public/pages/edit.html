@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Character</title>
+  </head>
+  <body>
+    <h1>Edit Character</h1>
+    
+    <label for="characterSelect">Select Character to Edit:</label>
+    <select id="characterSelect">
+      <option value="">Select a character</option>
+    </select>
+    <br><br>
+
+    <form id="editCharacterForm" style="display:none;">
+      <label for="fullname">Full Name:</label>
+      <input type="text" id="fullname" name="fullname" required><br>
+
+      <label for="birthday">Birthday:</label>
+      <input type="date" id="birthday" name="birthday" required><br>
+
+      <label for="employment">Employment:</label>
+      <input type="text" id="employment" name="employment" required><br>
+
+      <label for="gender">Gender:</label>
+      <input type="text" id="gender" name="gender" required><br>
+
+      <label for="networth">Net Worth:</label>
+      <input type="text" id="networth" name="networth" required><br>
+
+      <label for="game">Game:</label>
+      <input type="text" id="game" name="game" required><br>
+
+      <label for="playedby">Played By:</label>
+      <input type="text" id="playedby" name="playedby" required><br>
+
+      <label for="weight">Weight:</label>
+      <input type="number" id="weight" name="weight" required><br>
+
+      <label for="height">Height:</label>
+      <input type="text" id="height" name="height" required><br>
+
+      <label for="eye">Eye Color:</label>
+      <input type="text" id="eye" name="eye" required><br>
+
+      <label for="hair">Hair Color:</label>
+      <input type="text" id="hair" name="hair" required><br>
+
+      <label for="dead">Dead:</label>
+      <input type="checkbox" id="dead" name="dead"><br>
+
+      <label for="dateofdeath">Date of Death:</label>
+      <input type="date" id="dateofdeath" name="dateofdeath"><br>
+
+      <label for="alias">Alias:</label>
+      <input type="text" id="alias" name="alias"><br>
+
+      <button type="submit">Save Changes</button>
+    </form>
+
+    <script>
+      async function loadCharacters() {
+        try {
+          const response = await fetch('/data');
+          const data = await response.json();
+          const characters = data.characters;
+          
+          const characterSelect = document.getElementById('characterSelect');
+          
+          characters.forEach((character, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = character.fullname;
+            characterSelect.appendChild(option);
+          });
+        } catch (error) {
+          alert('Error loading characters: ' + error.message);
+        }
+      }
+
+      document.getElementById('characterSelect').addEventListener('change', function() {
+        const selectedIndex = this.value;
+        
+        if (selectedIndex === "") {
+          document.getElementById('editCharacterForm').style.display = "none";
+          return;
+        }
+
+        fetch('/data')
+          .then(response => response.json())
+          .then(data => {
+            const character = data.characters[selectedIndex];
+
+            document.getElementById('fullname').value = character.fullname;
+            document.getElementById('birthday').value = character.birthday;
+            document.getElementById('employment').value = character.employment;
+            document.getElementById('gender').value = character.gender;
+            document.getElementById('networth').value = character.networth;
+            document.getElementById('game').value = character.game;
+            document.getElementById('playedby').value = character.playedby;
+            document.getElementById('weight').value = character.weight;
+            document.getElementById('height').value = character.height;
+            document.getElementById('eye').value = character.eye;
+            document.getElementById('hair').value = character.hair;
+            document.getElementById('dead').checked = character.dead;
+            document.getElementById('dateofdeath').value = character.dateofdeath;
+            document.getElementById('alias').value = character.alias;
+
+            document.getElementById('editCharacterForm').style.display = "block";
+            document.getElementById('editCharacterForm').onsubmit = function(e) {
+              e.preventDefault();
+
+              const updatedCharacter = {
+                fullname: document.getElementById('fullname').value,
+                birthday: document.getElementById('birthday').value,
+                employment: document.getElementById('employment').value,
+                gender: document.getElementById('gender').value,
+                networth: document.getElementById('networth').value,
+                game: document.getElementById('game').value,
+                playedby: document.getElementById('playedby').value,
+                weight: document.getElementById('weight').value,
+                height: document.getElementById('height').value,
+                eye: document.getElementById('eye').value,
+                hair: document.getElementById('hair').value,
+                dead: document.getElementById('dead').checked,
+                dateofdeath: document.getElementById('dateofdeath').value,
+                alias: document.getElementById('alias').value
+              };
+
+              const index = selectedIndex;
+
+              fetch('/edit-character', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ index, updatedCharacter })
+              })
+              .then(response => {
+                if (response.ok) {
+                  location.reload();
+                } else {
+                  alert('Failed to update character');
+                }
+              })
+              .catch(error => {
+                alert('Error updating character: ' + error.message);
+              });
+            };
+          })
+          .catch(error => {
+            alert('Error loading character data: ' + error.message);
+          });
+      });
+
+      loadCharacters();
+    </script>
+  </body>
+</html>
