@@ -98,13 +98,12 @@ app.get('/data', (req, res) => {
     fs.readFile(dataFilePath, 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading data.json:', err);
-            res.status(500).json({ error: 'Failed to read character data.' });
-            return;
+            return res.status(500).json({ error: 'Failed to read character data.' });
         }
 
         try {
             const characters = JSON.parse(data);
-            res.json({ characters });
+            res.json(characters);
         } catch (e) {
             console.error('Error parsing JSON data:', e);
             res.status(500).json({ error: 'Failed to parse character data' });
