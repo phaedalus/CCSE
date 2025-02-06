@@ -64,29 +64,31 @@ app.post('/edit-character', (req, res) => {
     fs.readFile(dataFilePath, 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading data.json:', err);
-            res.status(500).json({ error: 'Failed to read character data' });
-            return;
+            return res.status(500).json({ error: 'Failed to read character data' });
         }
 
-        let characters = [];
+        let jsonData = {};
 
         try {
-            characters = JSON.parse(data);
+            jsonData = JSON.parse(data);
+            if (!jsonData.characters || !Array.isArray(jsonData.characters)) {
+                jsonData.characters = [];
+            }
         } catch (e) {
             console.error('Error parsing JSON data:', e);
+            return res.status(500).json({ error: 'Invalid JSON format' });
         }
 
-        if (index < 0 || index >= characters.length) {
+        if (index < 0 || index >= jsonData.characters.length) {
             return res.status(400).json({ error: 'Invalid character index' });
         }
 
-        characters[index] = updatedCharacter;
-        
-        fs.writeFile(dataFilePath, JSON.stringify(characters, null, 2), (err) => {
+        jsonData.characters[index] = updatedCharacter;
+
+        fs.writeFile(dataFilePath, JSON.stringify(jsonData, null, 2), (err) => {
             if (err) {
                 console.error('Error saving character data:', err);
-                res.status(500).json({ error: 'Failed to save updated character data' });
-                return;
+                return res.status(500).json({ error: 'Failed to save updated character data' });
             }
 
             res.status(200).json({ message: 'Character updated successfully' });

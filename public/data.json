@@ -1,20 +1,4 @@
 {
-  "62": {
-    "fullname": "Sofia Ramirez",
-    "birthday": "2001-09-11",
-    "employment": "U.S. Military - Army",
-    "gender": "Female",
-    "networth": "80 k",
-    "game": "GRB",
-    "playedby": "Rob",
-    "weight": "130",
-    "height": "5'5",
-    "eye": "brown",
-    "hair": "black",
-    "dead": false,
-    "dateofdeath": "",
-    "alias": "Spooky"
-  },
   "characters": [
     {
       "fullname": "Maxwell Achilles Sterling",
