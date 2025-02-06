@@ -35,10 +35,10 @@
         <label for="game">Game:</label>
         <select id="game" name="game" required>
             <option value="GTA">Grand Theft Auto V (Ps4)</option>
-                <option value="GTA5P5">Grand Theft Auto V (Ps5)</option>
-                <option value="GRB">Tom Clancy's Ghost Recon Breakpoint</option>
-                <option value="ACU">Assassin's Creed Unity</option>
-                <option value="RDR">Red Dead Redemption 2</option>
+            <option value="GTA5P5">Grand Theft Auto V (Ps5)</option>
+            <option value="GRB">Tom Clancy's Ghost Recon Breakpoint</option>
+            <option value="ACU">Assassin's Creed Unity</option>
+            <option value="RDR">Red Dead Redemption 2</option>
         </select><br>
 
         <label for="playedby">Played By:</label>
@@ -71,15 +71,29 @@
     <script>
         async function loadCharacters() {
             try {
-                const response = await fetch('/data');
+                // Use the relative path to access data.json from the public folder
+                const response = await fetch('../data.json'); 
                 const data = await response.json();
-                const characters = data.characters;
-                const games = data.games; // Assuming a list of games is available in the response
-              
+
+                // Check if the data has the 'characters' array
+                if (!data.characters) {
+                    throw new Error("Missing 'characters' data field");
+                }
+
                 const characterSelect = document.getElementById('characterSelect');
                 const gameSelect = document.getElementById('game');
 
-                // Populate game dropdown
+                // Populate character dropdown
+                data.characters.forEach((character, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = character.fullname;
+                    characterSelect.appendChild(option);
+                });
+
+                // Set up game options (this seems to be fixed options as per your original code)
+                const games = ['GTA', 'GTA5P5', 'GRB', 'ACU', 'RDR']; // List of possible game options
+
                 games.forEach(game => {
                     const option = document.createElement('option');
                     option.value = game;
@@ -87,15 +101,8 @@
                     gameSelect.appendChild(option);
                 });
 
-                // Populate character dropdown
-                characters.forEach((character, index) => {
-                    const option = document.createElement('option');
-                    option.value = index;
-                    option.textContent = character.fullname;
-                    characterSelect.appendChild(option);
-                });
             } catch (error) {
-                alert('Error loading data: ' + error.message);
+                console.error('Error loading data: ' + error.message);
             }
         }
 
