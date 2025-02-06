@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>HEX Edit Character</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>HEX Edit Character</h1>
-    <a href="https://ccse.onrender.com/">Back</a>
 
     <label for="characterSelect">Select Character to Edit:</label>
     <select id="characterSelect">
@@ -17,55 +19,88 @@
     <br><br>
 
     <form id="editCharacterForm" style="display:none;">
-        <label for="fullname">Full Name:</label>
-        <input type="text" id="fullname" name="fullname" required><br>
+        <div class="collapsible">
+            <button class="collapsible-btn">Personal Information</button>
+            <div class="content">
+                <label for="fullname">Full Name:</label>
+                <input type="text" id="fullname" name="fullname" required><br>
 
-        <label for="birthday">Birthday:</label>
-        <input type="date" id="birthday" name="birthday" required><br>
+                <label for="birthday">Birthday:</label>
+                <input type="date" id="birthday" name="birthday" required><br>
 
-        <label for="employment">Employment:</label>
-        <input type="text" id="employment" name="employment" required><br>
+                <label for="gender">Gender:</label>
+                <input type="text" id="gender" name="gender" required><br>
 
-        <label for="gender">Gender:</label>
-        <input type="text" id="gender" name="gender" required><br>
+                <label for="weight">Weight:</label>
+                <input type="number" id="weight" name="weight" required><br>
 
-        <label for="networth">Net Worth:</label>
-        <input type="text" id="networth" name="networth" required><br>
+                <label for="height">Height:</label>
+                <input type="text" id="height" name="height" required><br>
 
-        <label for="game">Game:</label>
-        <select id="game" name="game" required>
-            <option value="GTA">Grand Theft Auto V (Ps4)</option>
-            <option value="GTA5P5">Grand Theft Auto V (Ps5)</option>
-            <option value="GRB">Tom Clancy's Ghost Recon Breakpoint</option>
-            <option value="ACU">Assassin's Creed Unity</option>
-            <option value="RDR">Red Dead Redemption 2</option>
-        </select><br>
+                <label for="eye">Eye Color:</label>
+                <input type="text" id="eye" name="eye" required><br>
 
-        <label for="playedby">Played By:</label>
-        <input type="text" id="playedby" name="playedby" required><br>
+                <label for="hair">Hair Color:</label>
+                <input type="text" id="hair" name="hair" required><br>
+            </div>
+        </div>
 
-        <label for="weight">Weight:</label>
-        <input type="number" id="weight" name="weight" required><br>
+        <div class="collapsible">
+            <button class="collapsible-btn">Employment Information</button>
+            <div class="content">
+                <label for="employment">Employment:</label>
+                <input type="text" id="employment" name="employment" required><br>
 
-        <label for="height">Height:</label>
-        <input type="text" id="height" name="height" required><br>
+                <label for="networth">Net Worth:</label>
+                <input type="text" id="networth" name="networth" required><br>
+                <label>(Networth Uses Abbreviations Ex: 80,000,000 is 80 m.)</label><br>
+            </div>
+        </div>
 
-        <label for="eye">Eye Color:</label>
-        <input type="text" id="eye" name="eye" required><br>
+        <div class="collapsible">
+            <button class="collapsible-btn">Game Information</button>
+            <div class="content">
+                <label for="game">Game:</label>
+                <select id="game" name="game" required>
+                    <option value="GTA">Grand Theft Auto V (Ps4)</option>
+                    <option value="GTA5P5">Grand Theft Auto V (Ps5)</option>
+                    <option value="GRB">Tom Clancy's Ghost Recon Breakpoint</option>
+                    <option value="ACU">Assassin's Creed Unity</option>
+                    <option value="RDR">Red Dead Redemption 2</option>
+                </select><br>
+            </div>
+        </div>
 
-        <label for="hair">Hair Color:</label>
-        <input type="text" id="hair" name="hair" required><br>
+        <div class="collapsible">
+            <button class="collapsible-btn">Character Status</button>
+            <div class="content">
+                <label for="dead">Dead:</label>
+                <input type="checkbox" id="dead" name="dead"><br>
 
-        <label for="dead">Dead:</label>
-        <input type="checkbox" id="dead" name="dead"><br>
+                <label for="dateofdeath">Date of Death:</label>
+                <input type="date" id="dateofdeath" name="dateofdeath"><br>
+            </div>
+        </div>
 
-        <label for="dateofdeath">Date of Death:</label>
-        <input type="date" id="dateofdeath" name="dateofdeath"><br>
+        <div class="collapsible">
+            <button class="collapsible-btn">Alias and Played By</button>
+            <div class="content">
+                <label for="alias">Alias:</label>
+                <input type="text" id="alias" name="alias"><br>
 
-        <label for="alias">Alias:</label>
-        <input type="text" id="alias" name="alias"><br>
+                <label for="playedby">Played By:</label>
+                <input type="text" id="playedby" name="playedby" required><br>
+            </div>
+        </div>
 
-        <button type="submit">Save Changes</button>
+        <center>
+            <button class="old-school-btn" type="submit">
+                <i class="fas fa-check"></i> Save Changes
+            </button>
+            <button class="old-school-btn" onclick="window.history.back();">
+                <i class="fas fa-backward"></i> Back
+            </button>
+        </center>
     </form>
 
     <script>
@@ -182,5 +217,6 @@
 
         loadCharacters();
     </script>
+    <script src="collapse.js"></script>
 </body>
 </html>

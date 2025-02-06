@@ -8,10 +8,15 @@ body {
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
+    overflow: hidden;
+    font-family: "Open Sans", serif;
 }
 
 h1 {
     color: #ff9800;
+    font-family: "Handjet", serif;
+    user-select: none;
+    font-size: 48px;
 }
 
 form {
@@ -29,7 +34,7 @@ label {
 }
 
 input, select, button {
-    width: 100%;
+    width: max-content;
     padding: 8px;
     margin-top: 5px;
     border-radius: 5px;
@@ -57,4 +62,90 @@ button:hover {
     form {
         max-width: 100%;
     }
+}
+
+.old-school-btn {
+    background-color: #3b8c8c;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 2px solid #2a6e6e;
+    border-radius: 5px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: max-content;
+}
+  
+.old-school-btn i {
+    margin-right: 8px;
+}
+
+.old-school-btn:hover {
+    background-color: #2a6e6e;
+    border-color: #1a4d4d;
+    transform: scale(1.05);
+}
+
+.old-school-btn:active {
+    background-color: #1a4d4d;
+    border-color: #0e3b3b;
+    transform: scale(1);
+}
+
+.collapsible-btn {
+    background-color: #333;
+    color: #f1f1f1;
+    padding: 12px 16px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.collapsible-btn:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+.collapsible-btn:after {
+    content: "\002B";
+    font-size: 18px;
+    color: #f1f1f1;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-btn.active:after {
+    content: "\2212";
+}
+
+.content {
+    padding: 12px 20px;
+    display: none;
+    overflow: hidden;
+    background-color: #1e1e1e;
+    border-radius: 5px;
+    margin-top: 8px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.content.show {
+    display: block;
+    opacity: 1;
+}
+
+.collapsible-btn.active + .content {
+    display: block;
+    opacity: 1;
 }
