@@ -6,19 +6,8 @@ const cors = require('cors');
 const port = 3000;
 const app = express();
 
-const allowedOrigins = ['https://molisstamatis.github.io', 'http://127.0.0.1:5500', 'https://ccse.onrender.com/'];
-app.use(cors({
-    origin: function (origin, callback) {
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    }
-}));
-
+app.use(cors({ origin: '*' }));
 app.use(express.json());
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/save-character', (req, res) => {
