@@ -16,39 +16,45 @@ app.post('/save-character', (req, res) => {
 
     fs.readFile(dataFilePath, 'utf8', (err, data) => {
         let characters = [];
-
+    
         if (err) {
             if (err.code === 'ENOENT') {
                 console.log('data.json not found, creating new file.');
             } else {
                 console.error('Error reading data.json:', err);
-                res.status(500).json({ error: 'Failed to read character data' });
-                return;
+                return res.status(500).json({ error: 'Failed to read character data' });
             }
         } else {
             try {
-                characters = JSON.parse(data);
+                const jsonData = JSON.parse(data); // Parse the JSON
+                if (jsonData && Array.isArray(jsonData.characters)) {
+                    characters = jsonData.characters; // Extract the array
+                } else {
+                    console.warn('Invalid data structure, resetting characters to an empty array.');
+                    characters = [];
+                }
             } catch (e) {
                 console.error('Error parsing JSON data:', e);
+                characters = [];
             }
         }
-
-        if (characterData && characterData.fullname && characterData.game) {
-            characters.push(characterData);
-        } else {
+    
+        if (!characterData || !characterData.fullname || !characterData.game) {
             return res.status(400).json({ error: 'Invalid character data' });
         }
-
-        fs.writeFile(dataFilePath, JSON.stringify(characters, null, 2), (err) => {
+    
+        characters.push(characterData);
+    
+        const newData = { characters }; // Wrap the array back in an object
+    
+        fs.writeFile(dataFilePath, JSON.stringify(newData, null, 2), (err) => {
             if (err) {
                 console.error('Error saving character data:', err);
-                res.status(500).json({ error: 'Failed to save character data' });
-                return;
+                return res.status(500).json({ error: 'Failed to save character data' });
             }
-
             res.status(200).json({ message: 'Character saved successfully' });
         });
-    });
+    });        
 });
 
 app.post('/edit-character', (req, res) => {
