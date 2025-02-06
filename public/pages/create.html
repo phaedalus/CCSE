@@ -140,7 +140,7 @@
                         body: JSON.stringify(characterData)
                     });
 
-                    alert(response.ok ? 'Character created successfully!' : 'Failed to create character.');
+                    location.reload();
                 } catch (error) {
                     alert('Error: ' + error.message);
                 }
