@@ -1,9 +1,21 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 
 const port = 3000;
 const app = express();
+
+const allowedOrigins = ['https://molisstamatis.github.io', 'http://127.0.0.1:5500'];
+app.use(cors({
+    origin: function (origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}));
 
 app.use(express.json());
 
