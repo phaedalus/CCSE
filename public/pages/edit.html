@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>HEX Edit Character</title>
+    <link rel="icon" type="image/png" href="../logo.png">
+    <title>CCSE - Edit</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>HEX Edit Character</h1>
 
     <label for="characterSelect">Select Character to Edit:</label>
     <select id="characterSelect">
@@ -51,16 +49,21 @@
                 <label for="employment">Employment:</label>
                 <input type="text" id="employment" name="employment" required><br>
 
-                <label for="networth">Net Worth:</label>
-                <input type="text" id="networth" name="networth" required><br>
-                <label>(Networth Uses Abbreviations Ex: 80,000,000 is 80 m.)</label><br>
+                <label for="networth">Net Worth Number:</label>
+                <input type="number" id="networth" name="networth" required><br>
+
+                <label for="networthSelect">Net Worth Type:</label>
+                <select id="networthSelect" name="networthSelect">
+                    <option value="k">Thousand</option>
+                    <option value="m">Million</option>
+                    <option value="b">Billion</option>
+                </select>
             </div>
         </div>
 
         <div class="collapsible">
             <button class="collapsible-btn">Game Information</button>
             <div class="content">
-                <label for="game">Game:</label>
                 <select id="game" name="game" required>
                     <option value="GTA">Grand Theft Auto V (Ps4)</option>
                     <option value="GTA5P5">Grand Theft Auto V (Ps5)</option>
@@ -74,20 +77,20 @@
         <div class="collapsible">
             <button class="collapsible-btn">Character Status</button>
             <div class="content">
-                <label for="dead">Dead:</label>
+                <label for="dead">Dead (Not Required):</label>
                 <input type="checkbox" id="dead" name="dead"><br>
 
-                <label for="dateofdeath">Date of Death:</label>
+                <label for="dateofdeath">Date of Death (Not Required):</label>
                 <input type="date" id="dateofdeath" name="dateofdeath"><br>
 
-                <label for="retired">Retired:</label>
+                <label for="retired">Retired (Not Required):</label>
                 <input type="checkbox" id="retired" name="retired"><br>
         </div>
 
         <div class="collapsible">
             <button class="collapsible-btn">Alias and Played By</button>
             <div class="content">
-                <label for="alias">Alias:</label>
+                <label for="alias">Alias (Not Required):</label>
                 <input type="text" id="alias" name="alias"><br>
 
                 <label for="playedby">Played By:</label>
@@ -106,13 +109,33 @@
     </form>
 
     <script>
+        function standardizeHeight(input) {
+            input = input.trim().toLowerCase();
+
+            let cmMatch = input.match(/^(\d+)\s*cm$/);
+            if (cmMatch) {
+                let cm = parseInt(cmMatch[1]);
+                let inchesTotal = Math.round(cm / 2.54);
+                let feet = Math.floor(inchesTotal / 12);
+                let inches = inchesTotal % 12;
+                return `${feet}'${inches}`;
+            }
+
+            let ftInMatch = input.match(/^(\d+)\s*(?:'|ft)?\s*(\d+)?\s*(?:''|in)?$/);
+            if (ftInMatch) {
+                let feet = parseInt(ftInMatch[1]);
+                let inches = ftInMatch[2] ? parseInt(ftInMatch[2]) : 0;
+                return `${feet}'${inches}`;
+            }
+
+            return input;
+        }
+
         async function loadCharacters() {
             try {
-                // Use the relative path to access data.json from the public folder
                 const response = await fetch('../data.json'); 
                 const data = await response.json();
 
-                // Check if the data has the 'characters' array
                 if (!data.characters) {
                     throw new Error("Missing 'characters' data field");
                 }
@@ -120,22 +143,11 @@
                 const characterSelect = document.getElementById('characterSelect');
                 const gameSelect = document.getElementById('game');
 
-                // Populate character dropdown
                 data.characters.forEach((character, index) => {
                     const option = document.createElement('option');
                     option.value = index;
                     option.textContent = character.fullname;
                     characterSelect.appendChild(option);
-                });
-
-                // Set up game options (this seems to be fixed options as per your original code)
-                const games = ['GTA', 'GTA5P5', 'GRB', 'ACU', 'RDR']; // List of possible game options
-
-                games.forEach(game => {
-                    const option = document.createElement('option');
-                    option.value = game;
-                    option.textContent = game;
-                    gameSelect.appendChild(option);
                 });
 
             } catch (error) {
@@ -160,8 +172,7 @@
                     document.getElementById('birthday').value = character.birthday;
                     document.getElementById('employment').value = character.employment;
                     document.getElementById('gender').value = character.gender;
-                    document.getElementById('networth').value = character.networth;
-                    document.getElementById('game').value = character.game; // Set selected game
+                    document.getElementById('game').value = character.game;
                     document.getElementById('playedby').value = character.playedby;
                     document.getElementById('weight').value = character.weight;
                     document.getElementById('height').value = character.height;
@@ -171,6 +182,16 @@
                     document.getElementById('dateofdeath').value = character.dateofdeath;
                     document.getElementById('alias').value = character.alias;
                     document.getElementById('retired').value = character.retired;
+
+                    const netWorthRegex = /^(\d+)\s*([kmb])$/i;
+                    const match = character.networth.match(netWorthRegex);
+                    if (match) {
+                        document.getElementById('networth').value = match[1];
+                        document.getElementById('networthSelect').value = match[2].toLowerCase();
+                    } else {
+                        document.getElementById('networth').value = "";
+                        document.getElementById('networthSelect').value = "k";
+                    }
 
                     document.getElementById('editCharacterForm').style.display = "block";
 
@@ -182,11 +203,11 @@
                             birthday: document.getElementById('birthday').value,
                             employment: document.getElementById('employment').value,
                             gender: document.getElementById('gender').value,
-                            networth: document.getElementById('networth').value,
-                            game: document.getElementById('game').value, // Updated game selection
+                            networth: document.getElementById('networth').value + " " + document.getElementById('networthSelect').value,
+                            game: document.getElementById('game').value,
                             playedby: document.getElementById('playedby').value,
                             weight: document.getElementById('weight').value,
-                            height: document.getElementById('height').value,
+                            height: standardizeHeight(document.getElementById('height').value),
                             eye: document.getElementById('eye').value,
                             hair: document.getElementById('hair').value,
                             dead: document.getElementById('dead').checked,

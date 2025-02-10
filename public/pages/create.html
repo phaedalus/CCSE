@@ -3,14 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <title>HEX Create Character</title>
+        <link rel="icon" type="image/png" href="../logo.png">
+        <title>CCSE - Create</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <h1>HEX Create Character</h1>
         <form id="characterForm">
             <div class="collapsible">
                 <button class="collapsible-btn">Personal Information</button>
@@ -44,16 +42,21 @@
                     <label for="employment">Employment:</label>
                     <input type="text" id="employment" name="employment" required>
         
-                    <label for="networth">Net Worth:</label>
-                    <input type="text" id="networth" name="networth" required>
-                    <label>(Networth Uses Abbreviations Ex: 80,000,000 is 80 m.)</label>
+                    <label for="networth">Net Worth Number:</label>
+                    <input type="number" id="networth" name="networth" required>
+
+                    <label for="networthSelect">Net Worth Type:</label>
+                    <select id="networthSelect" name="networthSelect">
+                        <option value="k">Thousand</option>
+                        <option value="m">Million</option>
+                        <option value="b">Billion</option>
+                    </select>
                 </div>
             </div>
         
             <div class="collapsible">
                 <button class="collapsible-btn">Game Information</button>
                 <div class="content">
-                    <label for="game">Game:</label>
                     <select id="game" name="game">
                         <option value="GTA">Grand Theft Auto V (Ps4)</option>
                         <option value="GTA5P5">Grand Theft Auto V (Ps5)</option>
@@ -68,21 +71,21 @@
             <div class="collapsible">
                 <button class="collapsible-btn">Character Status</button>
                 <div class="content">
-                    <label for="dead">Dead:</label>
+                    <label for="dead">Dead (Not Required):</label>
                     <input type="checkbox" id="dead" name="dead">
         
-                    <label for="dateofdeath">Date of Death:</label>
+                    <label for="dateofdeath">Date of Death (Not Required):</label>
                     <input type="date" id="dateofdeath" name="dateofdeath">
 
-                    <label for="retired">Retired:</label>
-                    <input type="checkbox" id="retired" name="retired"><br>
+                    <label for="retired">Retired (Not Required):</label>
+                    <input type="checkbox" id="retired" name="retired">
                 </div>
             </div>
         
             <div class="collapsible">
                 <button class="collapsible-btn">Alias and Played By</button>
                 <div class="content">
-                    <label for="alias">Alias:</label>
+                    <label for="alias">Alias (Not Required):</label>
                     <input type="text" id="alias" name="alias">
         
                     <label for="playedby">Played By:</label>
@@ -101,6 +104,28 @@
         </form>
 
         <script>
+            function standardizeHeight(input) {
+                input = input.trim().toLowerCase();
+
+                let cmMatch = input.match(/^(\d+)\s*cm$/);
+                if (cmMatch) {
+                    let cm = parseInt(cmMatch[1]);
+                    let inchesTotal = Math.round(cm / 2.54);
+                    let feet = Math.floor(inchesTotal / 12);
+                    let inches = inchesTotal % 12;
+                    return `${feet}'${inches}`;
+                }
+
+                let ftInMatch = input.match(/^(\d+)\s*(?:'|ft)?\s*(\d+)?\s*(?:''|in)?$/);
+                if (ftInMatch) {
+                    let feet = parseInt(ftInMatch[1]);
+                    let inches = ftInMatch[2] ? parseInt(ftInMatch[2]) : 0;
+                    return `${feet}'${inches}`;
+                }
+
+                return input;
+            }
+
             document.getElementById('game').addEventListener('change', function() {
                 const customGameInput = document.getElementById('customGame');
                 if (this.value === 'Other') {
@@ -115,6 +140,11 @@
             document.getElementById('characterForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
 
+                const networthValue = document.getElementById('networth').value;
+                const selectedOption = document.getElementById('networthSelect').value;
+
+                const netWorthWithSelect = `${networthValu} ${selectedOption}`;
+
                 const gameValue = document.getElementById('game').value === 'Other'
                     ? document.getElementById('customGame').value
                     : document.getElementById('game').value;
@@ -124,11 +154,11 @@
                     birthday: document.getElementById('birthday').value,
                     employment: document.getElementById('employment').value,
                     gender: document.getElementById('gender').value,
-                    networth: document.getElementById('networth').value,
+                    networth: netWorthWithSelect,
                     game: gameValue,
                     playedby: document.getElementById('playedby').value,
                     weight: document.getElementById('weight').value,
-                    height: document.getElementById('height').value,
+                    height: standardizeHeight(document.getElementById('height').value),
                     eye: document.getElementById('eye').value,
                     hair: document.getElementById('hair').value,
                     dead: document.getElementById('dead').checked,

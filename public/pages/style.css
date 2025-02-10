@@ -7,7 +7,6 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 20px;
     font-family: "Open Sans", serif;
 }
 
@@ -64,12 +63,12 @@ button:hover {
 }
 
 .old-school-btn {
-    background-color: #3b8c8c;
+    background-color: transparent;
     color: white;
     font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
-    border: 2px solid #2a6e6e;
+    border: 2px solid #ccc;
     border-radius: 5px;
     padding: 10px 20px;
     display: flex;
@@ -84,8 +83,8 @@ button:hover {
 }
 
 .old-school-btn:hover {
-    background-color: #2a6e6e;
-    border-color: #1a4d4d;
+    background-color: #0e0f0f;
+    border-color: rgb(72, 78, 78);
     transform: scale(1.05);
 }
 
@@ -147,4 +146,10 @@ button:hover {
 .collapsible-btn.active + .content {
     display: block;
     opacity: 1;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
