@@ -119,6 +119,44 @@ app.get('/data', (req, res) => {
     });
 });
 
+app.post('/add-var-to-characters', (req, res) => {
+    const { key, value } = req.body;
+    const dataFilePath = path.join(__dirname, 'public', 'data.json');
+
+    fs.readFile(dataFilePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading data.json:', err);
+            return res.status(500).json({ error: 'Failed to read character data' });
+        }
+
+        let jsonData = {};
+
+        try {
+            jsonData = JSON.parse(data);
+            if (!jsonData.characters || !Array.isArray(jsonData.characters)) {
+                jsonData.characters = [];
+            }
+        } catch (e) {
+            console.error('Error parsing JSON data:', e);
+            return res.status(500).json({ error: 'Invalid JSON format' });
+        }
+
+        jsonData.characters = jsonData.characters.map(character => ({
+            ...character,
+            [key]: value
+        }));
+
+        fs.writeFile(dataFilePath, JSON.stringify(jsonData, null, 2), (err) => {
+            if (err) {
+                console.error('Error saving updated character data:', err);
+                return res.status(500).json({ error: 'Failed to save updated character data' });
+            }
+
+            res.status(200).json({ message: 'New variable added to all characters successfully' });
+        });
+    });
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
