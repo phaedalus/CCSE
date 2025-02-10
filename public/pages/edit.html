@@ -79,7 +79,9 @@
 
                 <label for="dateofdeath">Date of Death:</label>
                 <input type="date" id="dateofdeath" name="dateofdeath"><br>
-            </div>
+
+                <label for="retired">Retired:</label>
+                <input type="checkbox" id="retired" name="retired"><br>
         </div>
 
         <div class="collapsible">
@@ -168,6 +170,7 @@
                     document.getElementById('dead').checked = character.dead;
                     document.getElementById('dateofdeath').value = character.dateofdeath;
                     document.getElementById('alias').value = character.alias;
+                    document.getElementById('retired').value = character.retired;
 
                     document.getElementById('editCharacterForm').style.display = "block";
 
@@ -188,7 +191,8 @@
                             hair: document.getElementById('hair').value,
                             dead: document.getElementById('dead').checked,
                             dateofdeath: document.getElementById('dateofdeath').value,
-                            alias: document.getElementById('alias').value
+                            alias: document.getElementById('alias').value,
+                            retired: document.getElementById('retired').checked
                         };
 
                         fetch('/edit-character', {
