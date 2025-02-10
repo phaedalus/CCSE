@@ -277,7 +277,7 @@
       "birthday": "2000-05-14",
       "employment": "Private Contractor",
       "gender": "Female",
-      "networth": "1.5 m",
+      "networth": "2.25 m",
       "game": "GRB",
       "playedby": "Jules",
       "weight": "168",
@@ -287,7 +287,7 @@
       "dead": false,
       "dateofdeath": "",
       "alias": "",
-      "retired": false
+      "retired": true
     },
     {
       "fullname": "Richard Thomas Rustler",
@@ -525,7 +525,7 @@
       "dead": false,
       "dateofdeath": "",
       "alias": "",
-      "retired": false
+      "retired": true
     },
     {
       "fullname": "Harold Crown",
