@@ -159,7 +159,7 @@ app.post('/add-var-to-characters', (req, res) => {
 });
 
 app.get('/generate-name', (req, res) => {
-    const gender = req.query.gender || 'unisex';
+    const gender = req.query.gender;
 
     let firstName, middleName;
     if (gender == 'male') {
@@ -168,9 +168,6 @@ app.get('/generate-name', (req, res) => {
     } else if (gender == 'female') {
         firstName = faker.person.firstName('female');
         middleName = faker.person.middleName('female');
-    } else {
-        firstName = faker.person.firstName();
-        middleName = faker.person.middleName();
     }
 
     const fullName = `${firstName} ${middleName} ${faker.person.lastName()}`;
