@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
+const { faker } = require('@faker-js/faker');
 
 const port = 3000;
 const app = express();
@@ -155,6 +156,25 @@ app.post('/add-var-to-characters', (req, res) => {
             res.status(200).json({ message: 'New variable added to all characters successfully' });
         });
     });
+});
+
+app.get('/generate-name', (req, res) => {
+    const gender = req.query.gender || 'unisex';
+
+    let firstName, middleName;
+    if (gender == 'male') {
+        firstName = faker.person.firstName('male');
+        middleName = faker.person.middleName('male');
+    } else if (gender == 'female') {
+        firstName = faker.person.firstName('female');
+        middleName = faker.person.middleName('female');
+    } else {
+        firstName = faker.person.firstName();
+        middleName = faker.person.middleName();
+    }
+
+    const fullName = `${firstName} ${middleName} ${faker.person.lastName()}`;
+    res.json({ fullname: fullName });
 });
 
 app.listen(port, () => {
