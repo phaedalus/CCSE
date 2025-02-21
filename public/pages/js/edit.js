@@ -80,7 +80,6 @@ async function submitForm(event, selectedIndex) {
     const updatedCharacter = {
         fullname: document.getElementById('fullname').value,
         birthday: document.getElementById('birthday').value,
-        employment: document.getElementById('employment').value,
         gender: document.getElementById('gender').value,
         networth: document.getElementById('networth').value + " " + document.getElementById('networthSelect').value,
         game: document.getElementById('game').value,
@@ -92,7 +91,11 @@ async function submitForm(event, selectedIndex) {
         dead: document.getElementById('dead').checked,
         dateofdeath: document.getElementById('dateofdeath').value,
         alias: document.getElementById('alias').value,
-        retired: document.getElementById('retired').checked
+        retired: document.getElementById('retired').checked,
+        employment: document.getElementById('employment').value,
+        branch: document.getElementById('branch').value,
+        unit: document.getElementById('unit').value,
+        unitnumber: document.getElementById('unit-number').value
     };
 
     try {
