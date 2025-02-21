@@ -182,6 +182,7 @@
                     document.getElementById('dateofdeath').value = character.dateofdeath;
                     document.getElementById('alias').value = character.alias;
                     document.getElementById('retired').checked = character.retired;
+                    console.log(character.retired);
 
                     const netWorthRegex = /^(\d+)\s*([kmb])$/i;
                     const match = character.networth.match(netWorthRegex);
