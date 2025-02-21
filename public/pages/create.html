@@ -8,7 +8,7 @@
         <title>CCSE - Create</title>
         <link rel="stylesheet" href="style.css">
     </head>
-    <body>
+    <body onload="document.getElementById('other').style.display = 'block'">
         <form id="characterForm">
             <div class="collapsible">
                 <button class="collapsible-btn">Personal Information</button>
@@ -37,10 +37,13 @@
             </div>
         
             <div class="collapsible">
-                <button class="collapsible-btn">Employment Information</button>
+                <button class="collapsible-btn">General Employment Information</button>
                 <div class="content">
                     <label for="employment">Employment:</label>
-                    <input type="text" id="employment" name="employment" required>
+                    <select id="employmentType" name="employmentType">
+                        <option value="other">Other</option>
+                        <option value="U.S. Military">U.S. Military</option>
+                    </select>
         
                     <label for="networth">Net Worth Number:</label>
                     <input type="number" id="networth" name="networth" required>
@@ -51,6 +54,37 @@
                         <option value="m">Million</option>
                         <option value="b">Billion</option>
                     </select>
+                </div>
+            </div>
+
+            <div class="collapse" id="mil" style="display: none;">
+                <button class="collapsible-btn">U.S. Military Employee</button>
+                <div class="content">
+                    <label for="employment">Job Title:</label>
+                    <input  id="employment" type="text" value="U.S. Military" readonly>
+
+                    <label for="branch-select">Branch:</label>
+                    <select id="branch" name="branch">
+                        <option value="army">Army</option>
+                        <option value="navy">Navy</option>
+                        <option value="marinecorps">Marine Corps</option>
+                        <option value="spaceforce">Space Force</option>
+                        <option value="intelligence">Intelligence</option>
+                    </select>
+
+                    <label for="unit-select">Unit:</label>
+                    <select name="unit" id="unit"></select>
+
+                    <label for="unit-number">Unit Number:</label>
+                    <input type="text" id="unit-number" name="unit-number" placeholder="e.g., 501st">
+                </div>
+            </div>
+
+            <div class="collapse" id="other" style="display: none;">
+                <button class="collapsible-btn">Other Employee</button>
+                <div class="content">
+                    <label for="employment">Job Title:</label>
+                    <input id="employment">
                 </div>
             </div>
         
@@ -64,7 +98,6 @@
                         <option value="ACU">Assassin's Creed Unity</option>
                         <option value="RDR">Red Dead Redemption 2</option>
                     </select>
-                    <input type="text" id="customGame" name="customGame" placeholder="Enter game name" style="display: none;">
                 </div>
             </div>
         
@@ -102,84 +135,10 @@
                 </button>
             </center>
         </form>
-
-        <script>
-            function standardizeHeight(input) {
-                input = input.trim().toLowerCase();
-
-                let cmMatch = input.match(/^(\d+)\s*cm$/);
-                if (cmMatch) {
-                    let cm = parseInt(cmMatch[1]);
-                    let inchesTotal = Math.round(cm / 2.54);
-                    let feet = Math.floor(inchesTotal / 12);
-                    let inches = inchesTotal % 12;
-                    return `${feet}'${inches}`;
-                }
-
-                let ftInMatch = input.match(/^(\d+)\s*(?:'|ft)?\s*(\d+)?\s*(?:''|in)?$/);
-                if (ftInMatch) {
-                    let feet = parseInt(ftInMatch[1]);
-                    let inches = ftInMatch[2] ? parseInt(ftInMatch[2]) : 0;
-                    return `${feet}'${inches}`;
-                }
-
-                return input;
-            }
-
-            document.getElementById('game').addEventListener('change', function() {
-                const customGameInput = document.getElementById('customGame');
-                if (this.value === 'Other') {
-                    customGameInput.style.display = 'block';
-                    customGameInput.required = true;
-                } else {
-                    customGameInput.style.display = 'none';
-                    customGameInput.required = false;
-                }
-            });
-
-            document.getElementById('characterForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                const networthValue = document.getElementById('networth').value;
-                const selectedOption = document.getElementById('networthSelect').value;
-
-                const netWorthWithSelect = `${networthValue} ${selectedOption}`;
-
-                const gameValue = document.getElementById('game').value === 'Other'
-                    ? document.getElementById('customGame').value
-                    : document.getElementById('game').value;
-
-                const characterData = {
-                    fullname: document.getElementById('fullname').value,
-                    birthday: document.getElementById('birthday').value,
-                    employment: document.getElementById('employment').value,
-                    gender: document.getElementById('gender').value,
-                    networth: netWorthWithSelect,
-                    game: gameValue,
-                    playedby: document.getElementById('playedby').value,
-                    weight: document.getElementById('weight').value,
-                    height: standardizeHeight(document.getElementById('height').value),
-                    eye: document.getElementById('eye').value,
-                    hair: document.getElementById('hair').value,
-                    dead: document.getElementById('dead').checked,
-                    dateofdeath: document.getElementById('dateofdeath').value,
-                    alias: document.getElementById('alias').value,
-                    retired: document.getElementById('retired').checked
-                };
-
-                try {
-                    const response = await fetch('/save-character', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(characterData)
-                    });
-
-                    location.reload();
-                } catch (error) {
-                    alert('Error: ' + error.message);
-                }
-            });
-        </script>
-        <script src="collapse.js"></script>
+        
+        <script src="js/helpers.js"></script>
+        <script src="js/career.js"></script>
+        <script src="js/collapse.js"></script>
+        <script src="js/create.js"></script>
     </body>
 </html>
