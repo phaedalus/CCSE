@@ -24,7 +24,9 @@ document.getElementById('characterForm').addEventListener('submit', async functi
         employment: document.getElementById('employment').value,
         branch: document.getElementById('branch').value,
         unit: document.getElementById('unit').value,
-        unitnumber: document.getElementById('unit-number').value
+        unitnumber: document.getElementById('unit-number').value,
+        hometown: document.getElementById('hometown').value,
+        yearsserved: document.getElementById('years-served').value
     };
 
     try {

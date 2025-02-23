@@ -1,3 +1,11 @@
+let gameGroups = {
+    "GTA": "Grand Theft Auto V",
+    "GTA5P5": "Grand Theft Auto V (PS5)",
+    "GRB": "Tom Clancy's Ghost Recon Breakpoint",
+    "ACU": "Assassin's Creed Unity",
+    "RDR": "Red Dead Redemption 2"
+};
+
 async function loadCharacters() {
     try {
         const response = await fetch('../data.json'); 
@@ -6,11 +14,28 @@ async function loadCharacters() {
         if (!data.characters) throw new Error("Missing 'characters' data field.");
 
         const characterSelect = document.getElementById('characterSelect');
-        data.characters.forEach((character, index) => {
-            const option = new Option(character.fullname, index);
-            characterSelect.appendChild(option);
+        characterSelect.innerHTML = '<option value="">Select a character</option>';
+
+        const optGroups = {};
+        Object.keys(gameGroups).forEach(gameKey => {
+            const optGroup = document.createElement("optgroup");
+            optGroup.label = gameGroups[gameKey];
+            optGroup.id = `${gameKey}-group`;
+            optGroups[gameKey] = optGroup;
         });
 
+        data.characters.forEach((character, index) => {
+            if (optGroups[character.game]) {
+                const option = new Option(character.fullname, index);
+                optGroups[character.game].appendChild(option);
+            }
+        });
+
+        Object.values(optGroups).forEach(group => {
+            if (group.children.length > 0) {
+                characterSelect.appendChild(group);
+            }
+        });
     } catch (error) {
         console.error('Error loading data: ' + error.message);
     }
@@ -34,14 +59,15 @@ async function loadCharacterDetails(selectedIndex) {
 
         document.getElementById('editCharacterForm').onsubmit = (e) => submitForm(e, selectedIndex);
     } catch (error) {
-        alert('Error loading character data: ' + error.message);
+        console.error('Error loading character data: ' + error.message);
     }
 }
 
 function populateForm(character) {
     const fields = [
         'fullname', 'birthday', 'employment', 'gender', 'game',
-        'playedby', 'weight', 'height', 'eye', 'hair', 'dateofdeath', 'alias'
+        'playedby', 'weight', 'height', 'eye', 'hair', 'dateofdeath', 'alias',
+        'hometown'
     ];
 
     fields.forEach(field => {
@@ -67,6 +93,8 @@ function populateForm(character) {
 
         document.getElementById('unit').value = character.unit || "unit";
         document.getElementById('unit-number').value = character.unitnumber || "";
+
+        document.getElementById('years-served').value = character.yearsserved || "";
     } else {
         document.getElementById('mil').style.display = 'none';
         document.getElementById('other').style.display = 'block';
@@ -95,7 +123,9 @@ async function submitForm(event, selectedIndex) {
         employment: document.getElementById('employment').value,
         branch: document.getElementById('branch').value,
         unit: document.getElementById('unit').value,
-        unitnumber: document.getElementById('unit-number').value
+        unitnumber: document.getElementById('unit-number').value,
+        hometown: document.getElementById('hometown').value,
+        yearsserved: document.getElementById('years-served').value
     };
 
     try {
@@ -109,7 +139,7 @@ async function submitForm(event, selectedIndex) {
 
         location.reload();
     } catch (error) {
-        alert('Error updating character: ' + error.message);
+        console.error("Error updating character: " + error.message);
     }
 }
 

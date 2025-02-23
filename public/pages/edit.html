@@ -11,9 +11,7 @@
     <body>
 
         <label for="characterSelect">Select Character to Edit:</label>
-        <select id="characterSelect">
-            <option value="">Select a character</option>
-        </select>
+        <select id="characterSelect"></select>
         <br><br>
 
         <form id="editCharacterForm" style="display:none;">
@@ -40,6 +38,9 @@
 
                     <label for="hair">Hair Color:</label>
                     <input type="text" id="hair" name="hair" required><br>
+
+                    <label for="hometown">Hometown:</label>
+                    <input type="text" id="hometown" name="hometown" required><br>
                 </div>
             </div>
 
@@ -53,7 +54,7 @@
                     </select>
         
                     <label for="networth">Net Worth Number:</label>
-                    <input type="number" id="networth" name="networth" required>
+                    <input type="text" id="networth" name="networth" required>
 
                     <label for="networthSelect">Net Worth Type:</label>
                     <select id="networthSelect" name="networthSelect">
@@ -68,10 +69,10 @@
                 <button class="collapsible-btn">U.S. Military Employee</button>
                 <div class="content">
                     <label for="employment">Job Title:</label>
-                    <input  id="employment" type="text" value="U.S. Military" readonly>
+                    <input  id="employment" type="text" value="U.S. Military" name="employment" readonly>
 
                     <label for="branch-select">Branch:</label>
-                    <select id="branch" name="branch">
+                    <select id="branch" name="branch" required>
                         <option value="army">Army</option>
                         <option value="navy">Navy</option>
                         <option value="marinecorps">Marine Corps</option>
@@ -80,10 +81,13 @@
                     </select>
 
                     <label for="unit-select">Unit:</label>
-                    <select name="unit" id="unit"></select>
+                    <select name="unit" id="unit" required></select>
 
                     <label for="unit-number">Unit Number:</label>
                     <input type="text" id="unit-number" name="unit-number" placeholder="e.g., 501st">
+
+                    <label for="years">Years Served:</label>
+                    <input type="number" id="years-served" name="years-served" required>
                 </div>
             </div>
 
@@ -91,7 +95,7 @@
                 <button class="collapsible-btn">Other Employee</button>
                 <div class="content">
                     <label for="employment">Job Title:</label>
-                    <input id="employment">
+                    <input id="employment" name="employment" required>
                 </div>
             </div>
 
@@ -146,5 +150,6 @@
         <script src="js/helpers.js"></script>
         <script src="js/edit.js"></script>
         <script src="js/collapse.js"></script>
+        <script src="js/error.js"></script>
     </body>
 </html>
