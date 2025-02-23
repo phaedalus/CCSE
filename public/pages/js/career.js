@@ -1,12 +1,21 @@
-document.getElementById("employmentType").addEventListener("change", function() {
-    let selectedValue = this.value;
-    if (selectedValue == "U.S. Military") {
-        document.getElementById('mil').style.display = 'block';
-        document.getElementById('other').style.display = 'none';
-        updateUnits();
-    } else if (selectedValue == "other") {
-        document.getElementById('other').style.display = 'block';
-        document.getElementById('mil').style.display = 'none';
+document.getElementById('employmentType').addEventListener('change', function() {
+    var employmentType = this.value;
+    var milSection = document.getElementById('mil');
+    var otherSection = document.getElementById('other');
+    var employmentField = document.getElementById('employment');
+
+    if (employmentType === 'U.S. Military') {
+        milSection.style.display = 'block';
+        otherSection.style.display = 'none';
+        employmentField.required = true; 
+    } else if (employmentType === 'other') {
+        otherSection.style.display = 'block';
+        milSection.style.display = 'none';
+        employmentField.required = true; 
+    } else {
+        milSection.style.display = 'none';
+        otherSection.style.display = 'none';
+        employmentField.required = false;
     }
 });
 
