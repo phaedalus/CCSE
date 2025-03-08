@@ -203,7 +203,7 @@ async function submitForm(event, selectedIndex) {
         yearsserved: document.getElementById('years-served').value,
         relationshipstatus: document.getElementById("relstatus").value,
         playerrelation: document.getElementById("relatedplayer").checked,
-        playerrelated: document.getElementById("selectCharacter").value
+        playerrelated: document.getElementById("selectcharacter").value
     };
 
     try {
