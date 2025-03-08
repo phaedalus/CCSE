@@ -120,6 +120,29 @@
                     <input type="checkbox" id="retired" name="retired">
                 </div>
             </div>
+
+            <div class="collapsible">
+                <button class="collapsible-btn">Relationship Status</button>
+                <div class="content">
+                    <label for="relstatus">Relationship Status:</label>
+                    <select id="relstatus" name="relstatus" required>
+                        <option value="Single">Single</option>
+                        <option value="In a relationship">In a relationship</option>
+                        <option value="Engaged">Engaged</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                        <option value="It's complicated">It's complicated</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+
+                    <label for="relplayer" id="relp1" style="display: none;">Relation Involves Player?</label>
+                    <input type="checkbox" id="relatedplayer" name="relatedplayer" style="display: none;">
+
+                    <label for="selectplayer" id="relp2" style="display: none;">Character:</label>
+                    <select name="select" id="selectcharacter" style="display: none;"></select>
+                </div>
+            </div>
         
             <div class="collapsible">
                 <button class="collapsible-btn">Alias and Played By</button>
@@ -146,6 +169,6 @@
         <script src="js/career.js"></script>
         <script src="js/collapse.js"></script>
         <script src="js/create.js"></script>
-        <script src="js/error.js"></script>
+        <script src="js/enos.js"></script>
     </body>
 </html>

@@ -41,6 +41,41 @@ async function loadCharacters() {
     }
 }
 
+async function loadCharacters2() {
+    try {
+        const response = await fetch('../data.json'); 
+        const data = await response.json();
+
+        if (!data.characters) throw new Error("Missing 'characters' data field.");
+
+        const characterSelect = document.getElementById('selectcharacter');
+        characterSelect.innerHTML = '<option value="">Select a character</option>';
+
+        const optGroups = {};
+        Object.keys(gameGroups).forEach(gameKey => {
+            const optGroup = document.createElement("optgroup");
+            optGroup.label = gameGroups[gameKey];
+            optGroup.id = `${gameKey}-group`;
+            optGroups[gameKey] = optGroup;
+        });
+
+        data.characters.forEach((character) => {
+            if (optGroups[character.game]) {
+                const option = new Option(character.fullname, character.fullname);
+                optGroups[character.game].appendChild(option);
+            }
+        });
+
+        Object.values(optGroups).forEach(group => {
+            if (group.children.length > 0) {
+                characterSelect.appendChild(group);
+            }
+        });
+    } catch (error) {
+        console.error('Error loading data: ' + error.message);
+    }
+}
+
 async function loadCharacterDetails(selectedIndex) {
     try {
         if (selectedIndex === "") {
@@ -100,7 +135,47 @@ function populateForm(character) {
         document.getElementById('other').style.display = 'block';
         document.getElementById('employment').value = character.employment || "";
     }
+
+    document.getElementById("relstatus").value = character.relationshipstatus;
+    if (character.playerrelation === true) {
+        document.getElementById("relatedplayer").checked = character.playerrelation;
+        document.getElementById("selectcharacter").style.display = "block";
+        document.getElementById("selectcharacter").value = character.playerrelated;
+    } else {
+        document.getElementById("selectcharacter").style.display = "none";
+    }
 }
+
+document.getElementById("relstatus").addEventListener("change", function() {
+    if (this.value === "Single") {
+        document.getElementById("relp1").style.display = "none";
+        document.getElementById("relatedplayer").style.display = "none";
+    } else if (this.value === "In a relationship") {
+        document.getElementById("relp1").style.display = "block";
+        document.getElementById("relatedplayer").style.display = "block";
+    } else if (this.value === "Engaged") {
+        document.getElementById("relp1").style.display = "block";
+        document.getElementById("relatedplayer").style.display = "block";
+    } else if (this.value === "Married") {
+        document.getElementById("relp1").style.display = "block";
+        document.getElementById("relatedplayer").style.display = "block";
+    } else {
+        document.getElementById("relp1").style.display = "none";
+        document.getElementById("relatedplayer").style.display = "none";
+    }
+});
+
+document.getElementById("relatedplayer").addEventListener("change", function() {
+    if (this.checked) {
+        document.getElementById("relp2").style.display = "block";
+        document.getElementById("selectcharacter").style.display = "block";
+        loadCharacters2();
+    } else {
+        document.getElementById("relp2").style.display = "none";
+        document.getElementById("selectcharacter").style.display = "none";
+    }
+});
+
 
 async function submitForm(event, selectedIndex) {
     event.preventDefault();
@@ -125,7 +200,10 @@ async function submitForm(event, selectedIndex) {
         unit: document.getElementById('unit').value,
         unitnumber: document.getElementById('unit-number').value,
         hometown: document.getElementById('hometown').value,
-        yearsserved: document.getElementById('years-served').value
+        yearsserved: document.getElementById('years-served').value,
+        relationshipstatus: document.getElementById("relstatus").value,
+        playerrelation: document.getElementById("relatedplayer").checked,
+        playerrelated: document.getElementById("selectCharacter").value
     };
 
     try {
